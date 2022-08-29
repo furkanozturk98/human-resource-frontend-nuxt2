@@ -47,7 +47,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/proxy'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -55,7 +56,12 @@ export default {
   },
 
   axios: {
-    baseURL: 'http://127.0.0.1:5000/api/',
+    // baseURL: 'http://127.0.0.1:5000/api/',
+    proxy: true
+  },
+
+  proxy: {
+    '/api/': { target: 'http://127.0.0.1:5000/', changeOrigin: true }
   },
 
   auth: {
@@ -73,8 +79,8 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: '/login', method: 'post' },
-          user: { url: '/users/me', method: 'get' }
+          login: { url: '/api/login', method: 'post' },
+          user: { url: '/api/users/me', method: 'get' }
         }
       }
     }
