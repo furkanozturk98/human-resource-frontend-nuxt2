@@ -78,21 +78,21 @@
           </div>
 
           <div class="mb-3 row">
-            <label class="col-form-label col-md-3">Company</label>
+            <label class="col-form-label col-md-3 required">Company</label>
             <div class="col-md-9">
-<!--              <v-select-->
-<!--                v-model="form.company_id"-->
-<!--                label="text"-->
-<!--                :class="{'is-invalid': form.errors.has('company_id')}"-->
-<!--                :options="statusOptions"-->
-<!--                placeholder="(Select Company)"-->
-<!--                :searchable="false"-->
-<!--                :reduce="option => option.value"-->
-<!--                :style="[form.errors.has('company_id') ? { '&#45;&#45;vs-border-color': '#e3342f'} : { '&#45;&#45;vs-border-color': '#cdcdcd'}]"-->
-<!--              />-->
+              <v-select
+                v-model="form.company"
+                label="text"
+                :class="{'is-invalid': form.errors.has('company')}"
+                :options="companyList"
+                placeholder="(Select Company)"
+                :searchable="false"
+                :reduce="option => option.value"
+                :style="[form.errors.has('company') ? { '--vs-border-color': '#e3342f'} : { '--vs-border-color': '#cdcdcd'}]"
+              />
 
               <div class="invalid-feedback">
-                {{ form.errors.first('company_id') }}
+                {{ form.errors.first('company') }}
               </div>
             </div>
           </div>
@@ -104,24 +104,33 @@
 
 <script>
 import {Form} from 'form-backend-validation'
+import {mapState} from "vuex";
 
 export default {
   name: "EmployeeCreate",
 
-  // middleware: 'admin',
-
   data: ({$axios}) => ({
     form: new Form({
-      fist_name: '',
+      first_name: '',
       last_name: '',
       email: '',
       phone: '',
-      company_id: ''
+      company: ''
     }, {
       resetOnSuccess: false,
       http: $axios
     })
   }),
+
+  async fetch ({ store }) {
+    await store.dispatch('companies/list')
+  },
+
+  computed: {
+    ...mapState({
+      companyList: state => state.companies.list
+    }),
+  },
 
   methods: {
     async submit () {
