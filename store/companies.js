@@ -41,7 +41,7 @@ export const actions = {
     try {
       await vm.form.post('/api/companies');
 
-      await vm.$router.push('/api/companies');
+      await vm.$router.push('/companies');
     } catch (err) {
       if (err.response.status === 422) {
         console.log(err);
@@ -51,9 +51,9 @@ export const actions = {
 
   async update (context, vm) {
     try {
-      await vm.form.put(`/api/companies/${vm.id}`);
+      await vm.form.post(`/api/companies/${vm.id}`);
 
-      await vm.$router.push('/api/companies');
+      await vm.$router.push('/companies');
     } catch (err) {
       if (err.response.status !== 422) {
         console.log(err);
