@@ -3,11 +3,6 @@ export const state = () => ({
   item: null,
 })
 
-export const getters = {
-  typeOptions: state => state.typeOptions,
-  getType: state => type => state.typeOptions.find(item => item.value === type).text
-}
-
 export const mutations = {
   SET_ITEMS (state, items) {
     state.items = items
@@ -35,7 +30,7 @@ export const actions = {
     try {
       await vm.form.post('/api/employees');
 
-      await vm.$router.push('/api/employees');
+      await vm.$router.push('/employees');
     } catch (err) {
       if (err.response.status === 422) {
         console.log(err);
@@ -47,7 +42,7 @@ export const actions = {
     try {
       await vm.form.put(`/api/employees/${vm.id}`);
 
-      await vm.$router.push('/api/employees');
+      await vm.$router.push('/employees');
     } catch (err) {
       if (err.response.status !== 422) {
         console.log(err);
