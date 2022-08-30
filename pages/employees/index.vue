@@ -2,7 +2,7 @@
   <div>
     <div class="card m-3">
       <div class="card-body">
-        <div>
+        <div class="mb-5">
           <NuxtLink
             class="btn btn-secondary float-end mb-3"
             to="/employees/create"
@@ -30,12 +30,22 @@
             <td>{{ item.phone }}</td>
             <td>{{ item.company_name }}</td>
             <td>
+              <div class="float-end ">
+
               <NuxtLink
-                class="btn btn-warning float-end mb-3"
+                class="btn btn-warning mb-3"
                 :to="`/employees/${item.id}/edit`"
               >
                 Edit
               </NuxtLink>
+
+              <button
+                class="btn btn-danger mb-3"
+                @click="destroy(item.id)"
+              >
+                Delete
+              </button>
+              </div>
             </td>
           </tr>
           </tbody>
@@ -57,8 +67,6 @@ import {mapState} from 'vuex'
 export default {
   name: "EmployeeIndex",
 
-  // middleware: 'admin',
-
   data: () => ({
 
   }),
@@ -72,5 +80,21 @@ export default {
       items: state => state.employees.items
     })
   },
+
+  methods : {
+    async destroy(id) {
+        try {
+          console.log(id);
+          if (confirm('Are you sure ?')) {
+            await this.$axios.$delete(`api/employees/${id}`)
+
+            await this.$store.dispatch('employees/fetchAll', this);
+          }
+
+        } catch (err) {
+          console.log(err);
+        }
+      }
+  }
 }
 </script>
